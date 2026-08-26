@@ -1,0 +1,12 @@
+{% extends "academy/base.html" %}
+{% block title %}Booking confirmed{% endblock %}
+{% block content %}
+
+<div class="card" style="text-align:center;">
+  <span class="icon" style="font-size:2.5rem;">✅</span>
+  <h2>Lesson requested</h2>
+  <p>Your {{ subject.name }} lesson with {{ tutor.name }} has been requested. You'll be notified once it's confirmed.</p>
+  <a class="btn" href="{% url 'academy:home' %}">Back to home</a>
+</div>
+
+{% endblock %}

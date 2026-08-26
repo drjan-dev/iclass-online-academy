@@ -1,0 +1,34 @@
+{% extends "academy/base.html" %}
+{% block title %}Book a {{ subject.name }} Tutor{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <h1>Book a {{ subject.name }} Tutor</h1>
+</div>
+
+{% if not user.is_authenticated %}
+  <div class="card">
+    <p>Please <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to book a lesson.</p>
+  </div>
+{% else %}
+<form class="card" method="post">
+  {% csrf_token %}
+  <p>
+    <label>Tutor</label>
+    <select name="tutor_id" required>
+      {% for t in tutors %}
+        <option value="{{ t.id }}">{{ t.name }}</option>
+      {% empty %}
+        <option disabled>No tutors added yet for this subject</option>
+      {% endfor %}
+    </select>
+  </p>
+  <p>
+    <label>Date &amp; time</label>
+    <input type="datetime-local" name="scheduled_for" required>
+  </p>
+  <button class="btn btn-gold" type="submit">Request booking</button>
+</form>
+{% endif %}
+
+{% endblock %}

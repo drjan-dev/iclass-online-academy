@@ -1,0 +1,46 @@
+{% extends "academy/base.html" %}
+{% block title %}{{ track.short_name }} Tests{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <h1>{{ track.name }} Tests</h1>
+</div>
+
+{% if show_combo %}
+<div class="card">
+  <div class="section-label">Full JAMB Combo Test</div>
+  <p>Pick your combination for the full 180-question, 120-minute simulation.</p>
+  <div class="grid">
+    {% for key, combo in combos.items %}
+      <a class="btn btn-gold" style="text-align:center;"
+         href="{% url 'academy:test_ready' track.slug %}?mode=jamb_combo&combo={{ key }}">
+        {{ combo.label }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="card">
+  <div class="section-label">Individual Subject Tests</div>
+  <div class="grid">
+    {% for subject in subjects %}
+      <a class="tile" href="{% url 'academy:test_ready' track.slug %}?mode=subject&subject={{ subject.slug }}">
+        {{ subject.name }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-label">Topic-Based Tests</div>
+  <div class="grid">
+    {% for subject in subjects %}
+      <a class="tile" href="{% url 'academy:test_topic_select' track.slug subject.slug %}">
+        {{ subject.name }} topics
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

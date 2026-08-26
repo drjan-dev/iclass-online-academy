@@ -1,0 +1,16 @@
+{% extends "academy/base.html" %}
+{% block title %}Exit test?{% endblock %}
+{% block content %}
+
+<div class="card" style="text-align:center;">
+  <span class="icon" style="font-size:2.5rem;">⚠️</span>
+  <h2>Exit this test?</h2>
+  <p>Your progress on this attempt will not be saved.</p>
+  <form method="post" style="display:inline;">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Yes, exit</button>
+  </form>
+  <a class="btn btn-outline" href="{% url 'academy:test_take' attempt.id %}">Go back to test</a>
+</div>
+
+{% endblock %}

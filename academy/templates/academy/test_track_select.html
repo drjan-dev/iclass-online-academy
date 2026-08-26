@@ -1,0 +1,22 @@
+{% extends "academy/base.html" %}
+{% block title %}Tests &amp; Quizzes{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, var(--gold), #7A5A1F);">
+  <h1>📝 Tests &amp; Quizzes</h1>
+  <p>Pick your track to start a subject test, topic test, or full combo exam.</p>
+</div>
+
+<div class="grid">
+  {% for track in tracks %}
+    <a class="tile track-tile" style="--accent: {{ track.color_hex }}; border-top: 4px solid {{ track.color_hex }};"
+       href="{% url 'academy:test_subject_select' track.slug %}">
+      <span class="icon">🏛️</span>
+      <strong>{{ track.short_name }}</strong>
+    </a>
+  {% empty %}
+    <p>No tracks configured yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

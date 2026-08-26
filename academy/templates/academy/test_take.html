@@ -1,0 +1,60 @@
+{% extends "academy/base.html" %}
+{% block title %}Test in progress{% endblock %}
+{% block content %}
+
+{% if deadline_iso %}
+<div class="timer" id="timer">Time remaining: --:--</div>
+{% endif %}
+
+<div class="list-row">
+  <strong>{{ attempt.get_mode_display }}{% if attempt.subject %} · {{ attempt.subject }}{% endif %}</strong>
+  <a class="btn btn-danger" href="{% url 'academy:test_exit' attempt.id %}">Exit test</a>
+</div>
+
+<form method="post" id="test-form">
+  {% csrf_token %}
+  <input type="hidden" name="auto_submit" id="auto_submit" value="0">
+
+  {% for a in answers %}
+    <div class="question-block">
+      {% if attempt.mode == "jamb_combo" %}
+        <div class="section-label">{{ a.question.subject.name }}</div>
+      {% endif %}
+      <p><strong>{{ forloop.counter }}.</strong> {{ a.question.text }}</p>
+      {% for key, opt in a.question.options.items %}
+        <label class="option-label">
+          <input type="radio" name="q{{ a.question.id }}" value="{{ key }}" {% if a.selected_option == key %}checked{% endif %}>
+          {{ opt }}
+        </label>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <button class="btn btn-gold" type="submit">Submit Test</button>
+</form>
+
+{% if deadline_iso %}
+<script>
+  const deadline = new Date("{{ deadline_iso }}").getTime();
+  const timerEl = document.getElementById("timer");
+  const form = document.getElementById("test-form");
+  const autoSubmitField = document.getElementById("auto_submit");
+
+  const tick = () => {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) {
+      timerEl.textContent = "Time's up — submitting...";
+      autoSubmitField.value = "1";
+      form.submit();
+      return;
+    }
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    timerEl.textContent = "Time remaining: " + mins + ":" + String(secs).padStart(2, "0");
+    setTimeout(tick, 1000);
+  };
+  tick();
+</script>
+{% endif %}
+
+{% endblock %}

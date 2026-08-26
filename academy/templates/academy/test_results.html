@@ -1,0 +1,40 @@
+{% extends "academy/base.html" %}
+{% block title %}Results{% endblock %}
+{% block content %}
+
+<div class="card" style="text-align:center;">
+  <div class="score-ring">{{ percent }}%</div>
+  <h2>{{ attempt.score }} / {{ attempt.total }} correct</h2>
+  <p>{{ attempt.get_mode_display }}{% if attempt.subject %} · {{ attempt.subject }}{% endif %}</p>
+  {% if attempt.is_auto_submitted %}<p style="color:var(--bad);">Auto-submitted when time ran out.</p>{% endif %}
+</div>
+
+{% if grouped %}
+  <div class="card">
+    <div class="section-label">Score by subject</div>
+    {% for g in grouped %}
+      <div class="list-row"><span>{{ g.subject }}</span><strong>{{ g.correct }} / {{ g.total }}</strong></div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="card">
+  <div class="section-label">Where you can improve</div>
+  {% for a in wrong_answers %}
+    <div class="question-block">
+      <p><strong>{{ a.question.text }}</strong></p>
+      <div class="option-label option-wrong">Your answer: {{ a.selected_text }}</div>
+      <div class="option-label option-correct">Correct answer: {{ a.correct_text }}</div>
+      {% if a.question.explanation %}
+        <div class="explain">{{ a.question.explanation }}</div>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p>No wrong answers — excellent work! 🎉</p>
+  {% endfor %}
+</div>
+
+<a class="btn btn-gold" href="{% url 'academy:test_track_select' %}">Take another test</a>
+<a class="btn btn-outline" href="{% url 'academy:home' %}">Back to home</a>
+
+{% endblock %}

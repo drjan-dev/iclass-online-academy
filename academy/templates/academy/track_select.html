@@ -1,0 +1,23 @@
+{% extends "academy/base.html" %}
+{% block title %}Choose your track{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <h1>Which exam are you preparing for?</h1>
+  <p>Choose your track to see subjects, resources and tutors built for it.</p>
+</div>
+
+<div class="grid">
+  {% for track in tracks %}
+    <a class="tile track-tile" style="--accent: {{ track.color_hex }};"
+       href="{% url 'academy:subject_list' track.slug %}?next={{ next_step }}">
+      <span class="icon">🏛️</span>
+      <strong>{{ track.short_name }}</strong><br>
+      <span style="font-size:0.8rem;">{{ track.name }}</span>
+    </a>
+  {% empty %}
+    <p>No tracks configured yet — add them in the admin panel.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

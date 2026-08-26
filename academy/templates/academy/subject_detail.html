@@ -1,0 +1,21 @@
+{% extends "academy/base.html" %}
+{% block title %}{{ subject.name }} · {{ track.short_name }}{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <span class="badge" style="background:#00000030;">{{ track.short_name }}</span>
+  <h1>{{ subject.name }}</h1>
+</div>
+
+<div class="grid">
+  <a class="tile" href="{% url 'academy:resource_list' track.slug subject.slug 'slide' %}"><span class="icon">📑</span>Lesson Slides</a>
+  <a class="tile" href="{% url 'academy:resource_list' track.slug subject.slug 'video' %}"><span class="icon">🎬</span>Lesson Videos</a>
+  <a class="tile" href="{% url 'academy:resource_list' track.slug subject.slug 'textbook' %}"><span class="icon">📕</span>Textbooks</a>
+  <a class="tile" href="{% url 'academy:resource_list' track.slug subject.slug 'padlet' %}"><span class="icon">🧷</span>Padlet</a>
+  {% if track.short_name != "A-Level" %}
+  <a class="tile" href="{% url 'academy:resource_list' track.slug subject.slug 'past_question' %}"><span class="icon">🗒️</span>Past Questions</a>
+  {% endif %}
+  <a class="tile" href="{% url 'academy:book_tutor' track.slug subject.slug %}"><span class="icon">🎓</span>Book a {{ subject.name }} Tutor</a>
+</div>
+
+{% endblock %}

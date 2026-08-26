@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}iClass Online Academy{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/iclass.css' %}">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="{% url 'academy:home' %}">
+      <span class="brand-mark">iOA</span>
+      <span class="brand-name">iClass Online Academy</span>
+    </a>
+    <nav>
+      <a href="{% url 'academy:track_select' %}">Resources</a>
+      <a href="{% url 'academy:test_track_select' %}">Tests</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Log out</a>
+      {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+      {% endif %}
+    </nav>
+  </div>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>iClass Online Academy &middot; built for WAEC/NECO, JAMB, Cambridge IGCSE, Cambridge A-Levels &amp; IJMB</footer>
+</body>
+</html>

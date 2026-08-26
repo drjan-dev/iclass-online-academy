@@ -1,0 +1,14 @@
+{% extends "academy/base.html" %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+
+<div class="hero"><h1>Create your account</h1></div>
+
+<form class="card" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-gold" type="submit">Sign up</button>
+</form>
+<p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+
+{% endblock %}

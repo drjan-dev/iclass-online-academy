@@ -1,0 +1,21 @@
+{% extends "academy/base.html" %}
+{% block title %}{{ track.short_name }} Subjects{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <span class="badge" style="--accent: {{ track.color_hex }}; background:#00000030;">{{ track.short_name }}</span>
+  <h1>{{ track.name }}</h1>
+  <p>Pick a subject to view lesson slides, videos, textbooks and more.</p>
+</div>
+
+<div class="grid">
+  {% for subject in subjects %}
+    <a class="tile" href="{% url 'academy:subject_detail' track.slug subject.slug %}">
+      <span class="icon">📖</span>{{ subject.name }}
+    </a>
+  {% empty %}
+    <p>No subjects added yet for this track.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

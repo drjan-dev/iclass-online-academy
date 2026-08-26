@@ -1,0 +1,58 @@
+{% extends "academy/base.html" %}
+{% block title %}Home · iClass Online Academy{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <h1>{% if user.is_authenticated %}Welcome back, {{ user.first_name|default:user.username }}{% else %}Welcome to iClass Online Academy{% endif %}</h1>
+  <p>Lessons, resources and exam prep for WAEC/NECO, JAMB, Cambridge IGCSE, Cambridge A-Levels &amp; IJMB.</p>
+</div>
+
+{% if student %}
+<div class="candidate-slip">
+  <div>
+    <div class="section-label">Candidate</div>
+    <strong>{{ user.get_full_name|default:user.username }}</strong><br>
+    <span style="font-size:0.85rem;">Track: {{ student.primary_track|default:"Not set" }}</span>
+  </div>
+  <div style="text-align:right;">
+    <div class="section-label">Streak</div>
+    <strong>{{ student.streak_count }} day{{ student.streak_count|pluralize }}</strong>
+  </div>
+</div>
+{% endif %}
+
+<div class="grid">
+  <a class="tile" href="{% url 'academy:track_select' %}"><span class="icon">📚</span>Resources</a>
+  <a class="tile" href="{% url 'academy:test_track_select' %}"><span class="icon">📝</span>Tests &amp; Quizzes</a>
+  <a class="tile" href="{% url 'academy:track_select' %}?next=book-tutor"><span class="icon">🎓</span>Book a Tutor</a>
+  <a class="tile" href="{% url 'academy:track_select' %}"><span class="icon">🗂️</span>Digital Classroom</a>
+</div>
+
+{% if recent_attempts %}
+<div class="card" style="margin-top:20px;">
+  <div class="section-label">Recent tests</div>
+  {% for a in recent_attempts %}
+    <div class="list-row">
+      <span>{{ a.get_mode_display }}{% if a.subject %} · {{ a.subject }}{% endif %}</span>
+      {% if a.submitted_at %}
+        <a class="btn btn-outline" href="{% url 'academy:test_results' a.id %}">View result</a>
+      {% else %}
+        <a class="btn" href="{% url 'academy:test_take' a.id %}">Continue</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="card" style="margin-top:20px;">
+  <div class="section-label">Tracks</div>
+  <div class="grid">
+    {% for track in tracks %}
+      <a class="tile track-tile" style="--accent: {{ track.color_hex }};" href="{% url 'academy:subject_list' track.slug %}">
+        {{ track.short_name }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

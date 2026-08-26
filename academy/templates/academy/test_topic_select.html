@@ -1,0 +1,19 @@
+{% extends "academy/base.html" %}
+{% block title %}{{ subject.name }} Topics{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <h1>{{ subject.name }} — Topic Tests</h1>
+</div>
+
+<div class="grid">
+  {% for topic in topics %}
+    <a class="tile" href="{% url 'academy:test_ready' track.slug %}?mode=topic&topic={{ topic.id }}">
+      {{ topic.name }}
+    </a>
+  {% empty %}
+    <p>No topics added yet for {{ subject.name }}.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

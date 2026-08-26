@@ -1,0 +1,28 @@
+{% extends "academy/base.html" %}
+{% block title %}Are you ready?{% endblock %}
+{% block content %}
+
+<div class="card" style="text-align:center; margin-top:20px;">
+  <span class="icon" style="font-size:2.5rem;">🕮</span>
+  <h1>Are you ready?</h1>
+  <p>
+    {% if combo %}{{ combo.label }} — Full JAMB Combo Test
+    {% elif topic %}{{ topic.name }}
+    {% else %}{{ subject.name }}{% endif %}
+  </p>
+
+  <div class="list-row"><span>Questions</span><strong>{{ question_count }}</strong></div>
+  <div class="list-row"><span>Time limit</span><strong>{% if time_limit %}{{ time_limit }} minutes{% else %}Untimed{% endif %}</strong></div>
+
+  <p style="font-size:0.85rem; color:#555;">Once you start, the test opens in a focused screen. You can exit early if you need to.</p>
+
+  {% if user.is_authenticated %}
+    <a class="btn btn-gold" href="{% url 'academy:test_start' track.slug %}?mode={{ mode }}{% if subject %}&subject={{ subject.slug }}{% endif %}{% if topic %}&topic={{ topic.id }}{% endif %}{% if combo_key %}&combo={{ combo_key }}{% endif %}">
+      Start Test
+    </a>
+  {% else %}
+    <p><a class="btn" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Log in to start</a></p>
+  {% endif %}
+</div>
+
+{% endblock %}

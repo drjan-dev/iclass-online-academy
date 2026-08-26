@@ -1,0 +1,31 @@
+{% extends "academy/base.html" %}
+{% block title %}{{ label }} · {{ subject.name }}{% endblock %}
+{% block content %}
+
+<div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
+  <span class="badge" style="background:#00000030;">{{ track.short_name }} · {{ subject.name }}</span>
+  <h1>{{ label }}</h1>
+</div>
+
+<div class="card">
+  {% for r in resources %}
+    <div class="list-row">
+      <div>
+        <strong>{{ r.title }}</strong>
+        {% if r.description %}<br><span style="font-size:0.85rem;color:#555;">{{ r.description }}</span>{% endif %}
+        {% if not r.is_free %}<span class="badge" style="background:var(--gold); color:var(--navy);">Premium</span>{% endif %}
+      </div>
+      {% if r.file %}
+        <a class="btn btn-outline" href="{{ r.file.url }}" target="_blank">Open</a>
+      {% elif r.external_url %}
+        <a class="btn btn-outline" href="{{ r.external_url }}" target="_blank">Open</a>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p>No {{ label|lower }} added for {{ subject.name }} yet — add them in the admin panel.</p>
+  {% endfor %}
+</div>
+
+<a class="btn btn-outline" href="{% url 'academy:subject_detail' track.slug subject.slug %}">&larr; Back to {{ subject.name }}</a>
+
+{% endblock %}
