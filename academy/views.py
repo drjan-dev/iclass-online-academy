@@ -74,11 +74,19 @@ def resource_list(request, track_slug, subject_slug, resource_type):
     })
 
 
+TUTOR_PHOTOS = {
+    "Mr. Tunde Bakare": "img/tutors/tunde-bakare.jpg",
+    "Mrs. Adaeze Okonkwo": "img/tutors/adaeze-okonkwo.jpg",
+}
+
+
 @login_required
 def book_tutor(request, track_slug, subject_slug):
     track = get_object_or_404(Track, slug=track_slug)
     subject = get_object_or_404(Subject, slug=subject_slug)
     tutors = subject.tutors.all()
+    for t in tutors:
+        t.photo_static = TUTOR_PHOTOS.get(t.name)
     if request.method == "POST":
         student, _ = Student.objects.get_or_create(user=request.user)
         tutor = get_object_or_404(Tutor, id=request.POST.get("tutor_id"))

@@ -1,3 +1,4 @@
+{% load static %}
 {% extends "academy/base.html" %}
 {% block title %}Book a {{ subject.name }} Tutor{% endblock %}
 {% block content %}
@@ -11,6 +12,23 @@
     <p>Please <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to book a lesson.</p>
   </div>
 {% else %}
+
+{% if tutors %}
+<div class="grid" style="margin-bottom:18px;">
+  {% for t in tutors %}
+    <div class="card" style="text-align:center;">
+      {% if t.photo_static %}
+        <img src="{% static t.photo_static %}" alt="{{ t.name }}" style="width:84px;height:84px;border-radius:50%;object-fit:cover;margin-bottom:10px;box-shadow:var(--shadow);">
+      {% else %}
+        <div style="width:84px;height:84px;border-radius:50%;background:var(--parchment-dark);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);">{{ t.name|first }}</div>
+      {% endif %}
+      <strong>{{ t.name }}</strong>
+      {% if t.bio %}<p style="font-size:0.85rem;color:#555;">{{ t.bio }}</p>{% endif %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <form class="card" method="post">
   {% csrf_token %}
   <p>

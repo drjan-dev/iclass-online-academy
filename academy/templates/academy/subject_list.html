@@ -1,10 +1,20 @@
+{% load static %}
 {% extends "academy/base.html" %}
 {% block title %}{{ track.short_name }} Subjects{% endblock %}
 {% block content %}
 
 <div class="hero" style="background: linear-gradient(135deg, {{ track.color_hex }}, var(--navy-deep));">
-  <span class="badge" style="--accent: {{ track.color_hex }}; background:#00000030;">{{ track.short_name }}</span>
-  <h1>{{ track.name }}</h1>
+  {% if track.short_name == "WAEC" %}
+    <img class="track-crest-lg" src="{% static 'img/crests/waec.png' %}" alt="WAEC">
+    <img class="track-crest-lg" src="{% static 'img/crests/neco.png' %}" alt="NECO" style="margin-left:8px;">
+  {% elif track.short_name == "JAMB" %}
+    <img class="track-crest-lg" src="{% static 'img/crests/jamb.jpg' %}" alt="JAMB">
+  {% elif track.short_name == "IGCSE" or track.short_name == "A-Level" %}
+    <img class="track-crest-lg" src="{% static 'img/crests/cambridge.png' %}" alt="Cambridge Assessment">
+  {% elif track.short_name == "IJMB" %}
+    <img class="track-crest-lg" src="{% static 'img/crests/ijmb.png' %}" alt="IJMB">
+  {% endif %}
+  <h1 style="margin-top:12px;">{{ track.name }}</h1>
   <p>Pick a subject to view lesson slides, videos, textbooks and more.</p>
 </div>
 
